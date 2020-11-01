@@ -1,0 +1,5 @@
+host: 'localhost'
+adapter: 'postgresql'
+database: 'ping_dev'
+encoding: 'utf8'
+pool: 5
