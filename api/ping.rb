@@ -5,11 +5,6 @@ require 'pry'
 module Acme
   class Ping < Grape::API
     format :json
-    helpers do
-      def render_json(obj)
-        JSON.parse(obj.to_json)
-      end
-    end
 
     resource :ping do
       desc 'Return a status.'
@@ -50,7 +45,7 @@ module Acme
       post do
         ip = Ip.new(host: params[:host], port: params[:port] || 80)
         if ip.save
-          render_json(ip)
+          ip.attributes
         else
           error!(ip.errors.full_messages, 422)
         end

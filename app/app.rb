@@ -29,7 +29,7 @@ module Acme
       # Serve error pages or respond with API response
       case response[0]
       when 404, 500
-        content =  @rack_static.call(env)
+        content = @rack_static.call(env)
         [response[0], content[1], content[2]]
       else
         response

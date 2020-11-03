@@ -34,6 +34,7 @@ task default: %i[rubocop spec]
 namespace :db do
   desc 'Migrate the db'
   task :migrate do
+    ENV['RACK_ENV'] ||= 'development'
     connection_details = YAML.safe_load(File.open('config/database.yml'))
     ActiveRecord::Base.establish_connection(connection_details)
     ActiveRecord::MigrationContext.new('db/migrate/', ActiveRecord::SchemaMigration).migrate
@@ -67,6 +68,23 @@ namespace :db do
     filename = 'db/schema.rb'
     File.open(filename, 'w:utf-8') do |file|
       ActiveRecord::SchemaDumper.dump(ActiveRecord::Base.connection, file)
+    end
+  end
+
+  namespace :test do
+    desc 'Prepare spec db'
+    task :create do
+      connection_details = YAML.safe_load(File.open('config/test_database.yml'))
+      admin_connection = connection_details.merge({ 'database' => 'postgres',
+                                                    'schema_search_path' => 'public' })
+      ActiveRecord::Base.establish_connection(admin_connection)
+      ActiveRecord::Base.connection.create_database(connection_details.fetch('database'))
+    end
+
+    task :migrate do
+      connection_details = YAML.safe_load(File.open('config/test_database.yml'))
+      ActiveRecord::Base.establish_connection(connection_details)
+      ActiveRecord::MigrationContext.new('db/migrate/', ActiveRecord::SchemaMigration).migrate
     end
   end
 end

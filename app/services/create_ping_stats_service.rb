@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'dry/monads'
 
 class CreatePingStatsService
@@ -38,7 +39,7 @@ class CreatePingStatsService
   end
 
   def avg_rtt
-    succeeded_pings_duration.reduce(:+).to_i / pings.count.to_f
+    succeeded_pings_duration.reduce(:+).to_f / pings.count.to_f
   end
 
   def max_rtt
@@ -56,7 +57,7 @@ class CreatePingStatsService
   end
 
   def mean_square_rtt
-    Math.sqrt(succeeded_pings_duration.inject(0.0) { |s, y| s + y*y } / succeeded_pings_duration.length)
+    Math.sqrt(succeeded_pings_duration.inject(0.0) { |s, y| s + y * y } / succeeded_pings_duration.length)
   end
 
   def fail_percent
