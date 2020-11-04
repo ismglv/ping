@@ -3,15 +3,11 @@
 require 'rubygems'
 require 'bundler/setup'
 
-require 'pg'
-require 'active_record'
-require 'yaml'
-require 'rake'
-
-require 'rspec/core'
 require 'rspec/core/rake_task'
 
 RSpec::Core::RakeTask.new(:spec)
+
+Rake.add_rakelib './lib/tasks'
 
 task :environment do
   ENV['RACK_ENV'] ||= 'development'
@@ -19,7 +15,7 @@ task :environment do
 end
 
 task routes: :environment do
-  Acme::API.routes.each do |route|
+  ::API.routes.each do |route|
     method = route.request_method.ljust(10)
     path = route.origin
     puts "     #{method} #{path}"

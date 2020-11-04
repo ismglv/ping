@@ -2,11 +2,11 @@
 
 require 'spec_helper'
 
-describe Acme::API do
+describe API do
   include Rack::Test::Methods
 
   def app
-    Acme::API
+    ::API
   end
 
   describe 'GET /api/ping' do

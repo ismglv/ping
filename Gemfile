@@ -18,8 +18,7 @@ gem 'pg'
 gem 'puma'
 gem 'rack'
 gem 'rack-cors'
-gem 'sequel'
-gem 'sidekiq'
+gem 'concurrent-ruby', require: 'concurrent'
 
 group :development do
   gem 'guard'

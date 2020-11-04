@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'dry/monads'
-
 class CreatePingStatsService
   include Dry::Monads[:result]
   attr_reader :ip, :from, :to, :pings
