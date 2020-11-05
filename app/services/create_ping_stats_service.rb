@@ -31,7 +31,7 @@ class CreatePingStatsService
       max_rtt: max_rtt,
       min_rtt: min_rtt,
       median_rtt: median_rtt,
-      mean_square: mean_square_rtt,
+      standard_deviation: standard_deviation,
       fail_percent: fail_percent
     }
   end
@@ -56,6 +56,13 @@ class CreatePingStatsService
 
   def mean_square_rtt
     Math.sqrt(succeeded_pings_duration.inject(0.0) { |s, y| s + y * y } / succeeded_pings_duration.length)
+  end
+
+  def standard_deviation
+    mean = succeeded_pings_duration.inject(:+) / succeeded_pings_duration.length.to_f
+    var_sum = succeeded_pings_duration.map{|n| (n-mean)**2}.inject(:+).to_f
+    sample_variance = var_sum / (succeeded_pings_duration.length - 1)
+    Math.sqrt(sample_variance)
   end
 
   def fail_percent
